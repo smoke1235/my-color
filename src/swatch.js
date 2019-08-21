@@ -31,6 +31,7 @@ class Swatch extends Component {
 	}
 
 	build() {
+	
 		var props = this.props;
 		var swatchStyle = {
 			background: this.hexToRgbA(props.hex),

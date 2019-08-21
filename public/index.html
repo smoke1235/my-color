@@ -147,6 +147,25 @@
     border-radius: 2px;
 }
 
+.ui-dialog {
+	top :50px !important;
+}
+
+#react-tabs-custom .custom-colors-name{
+	 margin: 0 3px;
+    padding: 0 8.5px;
+}
+
+#react-tabs-custom .item-list {
+    padding: 8.5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#react-tabs-custom .item-list .item-list-item {
+    border: 1px solid #f1f2f3;
+}
 
 		</style>
 
@@ -253,7 +272,7 @@ var _controls = {
 };
 
 
-var color = new Color.newColor(jQuery("#peter"),
+var color = new Color(jQuery("#peter"),
 {
 	taps,
 
@@ -261,6 +280,7 @@ var color = new Color.newColor(jQuery("#peter"),
 	change: _controls.color.change,
 	hide: _controls.color.hide
 });
+
 
 
 </script>

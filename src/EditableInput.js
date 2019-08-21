@@ -2,20 +2,26 @@ import jQuery from "jquery";
 import Component from "./Component";
 import assign from 'lodash/assign';
 import tinycolor from "tinycolor2";
+import Swatch from './swatch';
+import includes from 'lodash/includes';
 
 
 class EditableInput extends Component {
 	constructor(props) {
 		super(props);
 
+		this.customColorsList = [];
+
 		this.state = {
 			value: String(props.value).toUpperCase(),
 			blurValue: String(props.value).toUpperCase(),
+			peter: "lef"
 		}
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleBlur = this.handleBlur.bind(this);
 		this.setUpdatedValue = this.setUpdatedValue.bind(this);
+		this.handleCustomClick = this.handleCustomClick.bind(this);
 	}
 
 	handleBlur() {
@@ -25,7 +31,11 @@ class EditableInput extends Component {
 	}
 
 	handleChange(e){
-		this.setUpdatedValue(e.target.value, e)
+		this.setUpdatedValue(e.target.value)
+	}
+
+	handleCustomClick(color) {
+		this.setUpdatedValue(color)
 	}
 
 	isColorValid(value) {
@@ -38,7 +48,8 @@ class EditableInput extends Component {
 		}
 	}
 
-	setUpdatedValue(value, e) {
+	setUpdatedValue(value) {
+
 		jQuery(".color-input-input input").removeClass("color-not-valid");
 
 		if (!this.isColorValid(value)) {
@@ -48,17 +59,43 @@ class EditableInput extends Component {
 			var tiny = tinycolor(value);
 			jQuery(".color-input-chip").css("background-color", tiny.toRgbString());
 
+
+
+			
 			if (this.props.onChange) {
 				this.props.onChange(value, false);
 			}
 
+
+
+			jQuery(".custom-colors").show();
+			var customSwatchList = jQuery(".item-list");
+
+
+
+			if (!includes(this.customColorsList, value)) {
+				this.customColorsList.push(value);
+				var props = {
+					color:value,
+					hex:value,
+					onClick: this.handleCustomClick,
+					folie: false
+				};
+				var swatch = new Swatch(props);
+				customSwatchList.append(swatch.build());
+			}
+
+
+
 			this.setState({
-				value: value
+				value: value,
+				peter: "none"
 			})
 		}
 	}
 
 	build() {
+
 		var defaultStyles = {
 			wrap: {
 				position: 'relative',
@@ -74,15 +111,18 @@ class EditableInput extends Component {
 		};
 
 		var outerdiv = jQuery(document.createElement('div') );
-		outerdiv.css(styles.wrap);
-		outerdiv.addClass("color-input");
+
+		var colorInput = jQuery(document.createElement('div') );
+
+		colorInput.css(styles.wrap);
+		colorInput.addClass("color-input");
 
 		if (this.props.label && !this.props.hideLabel){
 			var label = jQuery(document.createElement('div') );
 			label.css(styles.label);
 			label.addClass("color-input-name");
 			label.append(this.props.label);
-			outerdiv.append(label);
+			colorInput.append(label);
 		}
 
 		var colorInputInputOuter = jQuery(document.createElement('div') );
@@ -99,13 +139,36 @@ class EditableInput extends Component {
 
 		colorInputInputOuter.append(input);
 
-		outerdiv.append(colorInputInputOuter);
+		colorInput.append(colorInputInputOuter);
+
+		var tiny = tinycolor(this.state.value);
 
 		var colorInputChip = jQuery(document.createElement('div') );
 		colorInputChip.addClass("color-input-chip");
-		colorInputChip.css("background-color", "rgb(255, 255, 255);");
+		colorInputChip.css("background-color", tiny.toRgbString());
 
-		outerdiv.append(colorInputChip);
+		colorInput.append(colorInputChip);
+		outerdiv.append(colorInput);
+
+
+		var customColorsName = jQuery(document.createElement('div') );
+		customColorsName.addClass("custom-colors-name");
+		customColorsName.append(" Gekozen kleuren ");
+
+		var customColorsList = jQuery(document.createElement('div') );
+		customColorsList.addClass("item-list");
+
+		var customColors = jQuery(document.createElement('div') );
+		customColors.addClass("custom-colors");
+		customColors.hide();
+		customColors.append(customColorsName);
+
+
+		customColors.append(customColorsList);
+
+		outerdiv.append(customColors);
+
+
 
 		return outerdiv;
 	}

@@ -7,9 +7,6 @@ import Tab from './tabs/Tab';
 import TabList from "./tabs/TabList";
 import TabPanel from "./tabs/TabPanel";
 import Tabs from "./tabs/Tabs";
-import tinycolor from "tinycolor2";
-
-
 
 class mynewcolor {
 	constructor(element, opts) {
@@ -17,27 +14,21 @@ class mynewcolor {
 		this.options = opts;
 		this.diaOpen = false;
 		this.color = "#000000";
-		this.folieon = true;
-		this.folie = false;
-
-		this.handleChange = this.handleChange.bind(this);
 
 		this._createWrapper();
 		this._createDialog();
 		this._createTaps();
+
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 	handleChange(color, folie) {
 
 		this.color = color;
-		this.folie = folie;
+		this.folie = false;
 
 		if (this.options.change) {
-			this.options.change(color, folie);
-		}
-
-		if (!folie) {
-			jQuery("react-tabs__tab#folie").hide();
+			this.options.change(color);
 		}
 
 		jQuery(".open-select").removeAttr( 'style' );
@@ -47,9 +38,8 @@ class mynewcolor {
 			jQuery(".open-select").css("background-color", color);
 		}
 		else {
-			var tiny = tinycolor(color);
 			jQuery(".open-select").css(mynewcolor.defaultProps.openSelectStyle);
-			jQuery(".open-select").css("background-image", "linear-gradient(to right top, "+tiny.toRgbString()+", white)");
+			jQuery(".open-select").css("background-image", "linear-gradient(to right top, rgb(214, 160, 14), white)");
 		}
 	}
 
@@ -58,7 +48,7 @@ class mynewcolor {
 			this.dia.close();
 
 			if (this.options.hide)
-				this.options.hide(this.color, this.folie);
+				this.options.hide(this.color);
 		}
 		else {
 			this.dia.open();
@@ -67,8 +57,9 @@ class mynewcolor {
 		this.diaOpen = !this.diaOpen;
 	}
 
-	setColor(color, folie) {
-		this.handleChange(color, folie);
+
+	setColor(color) {
+		this.handleChange(color, false);
 	}
 
 	getColor() {
@@ -84,9 +75,11 @@ class mynewcolor {
 		this.handleChange = this.handleChange.bind(this);
 
 		if (custom) {
+			console.log("custom");
 			var value = this.getColor();
 			var editableInput = new EditableInput({label:" Kleurcode ", onChange:this.handleChange, value: value});
 			swatchList = swatchList.add(editableInput.build());
+
 		}
 		else {
 			map(colorPalette, (c, i) => {
@@ -143,24 +136,14 @@ class mynewcolor {
 		var aaaaa = [];
 		var bbbbb = [];
 		var ccccc = [];
-		var folieon = this.folieon;
 		var i = 0;
 		map(this.options.taps, (props, index) => {
-
 			var selected = false;
 			if (i == 0){
 				selected = true;
 			}
-
-			if (props.folie && folieon) {
-				aaaaa.push(this._createTapsHeader(props, index, selected));
-				bbbbb.push(this._createTapsPanel(props, index, selected));
-			}
-			else if (!props.folie)  {
-				aaaaa.push(this._createTapsHeader(props, index, selected));
-				bbbbb.push(this._createTapsPanel(props, index, selected));
-			}
-
+			aaaaa.push(this._createTapsHeader(props, index, selected));
+			bbbbb.push(this._createTapsPanel(props, index, selected));
 			i++;
 		});
 
@@ -193,8 +176,6 @@ class mynewcolor {
 		var tabpan1 = new TabPanel({children:children, id: id, selected:selected});
 		return tabpan1.build();
 	}
-
-
 }
 
 mynewcolor.defaultProps = {
@@ -203,8 +184,7 @@ mynewcolor.defaultProps = {
 		userSelect: "none",
 		"-webkit-user-drag": "none",
 		"-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)"
-	},
-	folieon:true
+	}
 }
 
 export default mynewcolor

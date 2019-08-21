@@ -13640,14 +13640,20 @@ var Color = (function () {
 	  enqueueReplaceState: function () {},
 
 	  /**
-	     * Sets a subset of the state. This only exists because _pendingState is
-	     * internal. This provides a merging strategy that is not available to deep
-	     * properties which is confusing. TODO: Expose pendingState or don't use it
-	     * during the merge.
-	     *
-	     * @internal
-	     */
-	  enqueueSetState: function () {}
+	    * Sets a subset of the state. This only exists because _pendingState is
+	    * internal. This provides a merging strategy that is not available to deep
+	    * properties which is confusing. TODO: Expose pendingState or don't use it
+	    * during the merge.
+	    *
+	    * @param {ReactClass} publicInstance The instance that should rerender.
+	    * @param {object} partialState Next partial state to be merged with state.
+	    * @param {?function} callback Called after component is updated.
+	    * @param {?string} Name of the calling function in the public API.
+	    * @internal
+	    */
+	  enqueueSetState: function (publicInstance, partialState, callback, callerName) {
+	    publicInstance.state = Object.assign(publicInstance.state, partialState); //publicInstance.build();
+	  }
 	};
 
 	const emptyObject = {};
@@ -13672,7 +13678,7 @@ var Color = (function () {
 
 	  props.children = props.children || "";
 	  this.props = props;
-	  this.context = context; // If a component has string refs, we will assign a different object later.
+	  this.context = context || {}; // If a component has string refs, we will assign a different object later.
 
 	  this.refs = emptyObject; // We initialize the default updater but the real one gets injected by the
 	  // renderer.
@@ -15357,16 +15363,363 @@ var Color = (function () {
 	})(Math);
 	});
 
+	/**
+	 * The base implementation of `_.findIndex` and `_.findLastIndex` without
+	 * support for iteratee shorthands.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {Function} predicate The function invoked per iteration.
+	 * @param {number} fromIndex The index to search from.
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function baseFindIndex(array, predicate, fromIndex, fromRight) {
+	  var length = array.length,
+	      index = fromIndex + (fromRight ? 1 : -1);
+
+	  while ((fromRight ? index-- : ++index < length)) {
+	    if (predicate(array[index], index, array)) {
+	      return index;
+	    }
+	  }
+	  return -1;
+	}
+
+	var _baseFindIndex = baseFindIndex;
+
+	/**
+	 * The base implementation of `_.isNaN` without support for number objects.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is `NaN`, else `false`.
+	 */
+	function baseIsNaN(value) {
+	  return value !== value;
+	}
+
+	var _baseIsNaN = baseIsNaN;
+
+	/**
+	 * A specialized version of `_.indexOf` which performs strict equality
+	 * comparisons of values, i.e. `===`.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} fromIndex The index to search from.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function strictIndexOf(array, value, fromIndex) {
+	  var index = fromIndex - 1,
+	      length = array.length;
+
+	  while (++index < length) {
+	    if (array[index] === value) {
+	      return index;
+	    }
+	  }
+	  return -1;
+	}
+
+	var _strictIndexOf = strictIndexOf;
+
+	/**
+	 * The base implementation of `_.indexOf` without `fromIndex` bounds checks.
+	 *
+	 * @private
+	 * @param {Array} array The array to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} fromIndex The index to search from.
+	 * @returns {number} Returns the index of the matched value, else `-1`.
+	 */
+	function baseIndexOf(array, value, fromIndex) {
+	  return value === value
+	    ? _strictIndexOf(array, value, fromIndex)
+	    : _baseFindIndex(array, _baseIsNaN, fromIndex);
+	}
+
+	var _baseIndexOf = baseIndexOf;
+
+	/** `Object#toString` result references. */
+	var stringTag$2 = '[object String]';
+
+	/**
+	 * Checks if `value` is classified as a `String` primitive or object.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a string, else `false`.
+	 * @example
+	 *
+	 * _.isString('abc');
+	 * // => true
+	 *
+	 * _.isString(1);
+	 * // => false
+	 */
+	function isString(value) {
+	  return typeof value == 'string' ||
+	    (!isArray_1(value) && isObjectLike_1(value) && _baseGetTag(value) == stringTag$2);
+	}
+
+	var isString_1 = isString;
+
+	/** Used as references for various `Number` constants. */
+	var NAN = 0 / 0;
+
+	/** Used to match leading and trailing whitespace. */
+	var reTrim = /^\s+|\s+$/g;
+
+	/** Used to detect bad signed hexadecimal string values. */
+	var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+	/** Used to detect binary string values. */
+	var reIsBinary = /^0b[01]+$/i;
+
+	/** Used to detect octal string values. */
+	var reIsOctal = /^0o[0-7]+$/i;
+
+	/** Built-in method references without a dependency on `root`. */
+	var freeParseInt = parseInt;
+
+	/**
+	 * Converts `value` to a number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to process.
+	 * @returns {number} Returns the number.
+	 * @example
+	 *
+	 * _.toNumber(3.2);
+	 * // => 3.2
+	 *
+	 * _.toNumber(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toNumber(Infinity);
+	 * // => Infinity
+	 *
+	 * _.toNumber('3.2');
+	 * // => 3.2
+	 */
+	function toNumber(value) {
+	  if (typeof value == 'number') {
+	    return value;
+	  }
+	  if (isSymbol_1(value)) {
+	    return NAN;
+	  }
+	  if (isObject_1(value)) {
+	    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+	    value = isObject_1(other) ? (other + '') : other;
+	  }
+	  if (typeof value != 'string') {
+	    return value === 0 ? value : +value;
+	  }
+	  value = value.replace(reTrim, '');
+	  var isBinary = reIsBinary.test(value);
+	  return (isBinary || reIsOctal.test(value))
+	    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+	    : (reIsBadHex.test(value) ? NAN : +value);
+	}
+
+	var toNumber_1 = toNumber;
+
+	/** Used as references for various `Number` constants. */
+	var INFINITY$2 = 1 / 0,
+	    MAX_INTEGER = 1.7976931348623157e+308;
+
+	/**
+	 * Converts `value` to a finite number.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.12.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted number.
+	 * @example
+	 *
+	 * _.toFinite(3.2);
+	 * // => 3.2
+	 *
+	 * _.toFinite(Number.MIN_VALUE);
+	 * // => 5e-324
+	 *
+	 * _.toFinite(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toFinite('3.2');
+	 * // => 3.2
+	 */
+	function toFinite(value) {
+	  if (!value) {
+	    return value === 0 ? value : 0;
+	  }
+	  value = toNumber_1(value);
+	  if (value === INFINITY$2 || value === -INFINITY$2) {
+	    var sign = (value < 0 ? -1 : 1);
+	    return sign * MAX_INTEGER;
+	  }
+	  return value === value ? value : 0;
+	}
+
+	var toFinite_1 = toFinite;
+
+	/**
+	 * Converts `value` to an integer.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to convert.
+	 * @returns {number} Returns the converted integer.
+	 * @example
+	 *
+	 * _.toInteger(3.2);
+	 * // => 3
+	 *
+	 * _.toInteger(Number.MIN_VALUE);
+	 * // => 0
+	 *
+	 * _.toInteger(Infinity);
+	 * // => 1.7976931348623157e+308
+	 *
+	 * _.toInteger('3.2');
+	 * // => 3
+	 */
+	function toInteger(value) {
+	  var result = toFinite_1(value),
+	      remainder = result % 1;
+
+	  return result === result ? (remainder ? result - remainder : result) : 0;
+	}
+
+	var toInteger_1 = toInteger;
+
+	/**
+	 * The base implementation of `_.values` and `_.valuesIn` which creates an
+	 * array of `object` property values corresponding to the property names
+	 * of `props`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {Array} props The property names to get values for.
+	 * @returns {Object} Returns the array of property values.
+	 */
+	function baseValues(object, props) {
+	  return _arrayMap(props, function(key) {
+	    return object[key];
+	  });
+	}
+
+	var _baseValues = baseValues;
+
+	/**
+	 * Creates an array of the own enumerable string keyed property values of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property values.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.values(new Foo);
+	 * // => [1, 2] (iteration order is not guaranteed)
+	 *
+	 * _.values('hi');
+	 * // => ['h', 'i']
+	 */
+	function values(object) {
+	  return object == null ? [] : _baseValues(object, keys_1(object));
+	}
+
+	var values_1 = values;
+
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeMax$1 = Math.max;
+
+	/**
+	 * Checks if `value` is in `collection`. If `collection` is a string, it's
+	 * checked for a substring of `value`, otherwise
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * is used for equality comparisons. If `fromIndex` is negative, it's used as
+	 * the offset from the end of `collection`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Collection
+	 * @param {Array|Object|string} collection The collection to inspect.
+	 * @param {*} value The value to search for.
+	 * @param {number} [fromIndex=0] The index to search from.
+	 * @param- {Object} [guard] Enables use as an iteratee for methods like `_.reduce`.
+	 * @returns {boolean} Returns `true` if `value` is found, else `false`.
+	 * @example
+	 *
+	 * _.includes([1, 2, 3], 1);
+	 * // => true
+	 *
+	 * _.includes([1, 2, 3], 1, 2);
+	 * // => false
+	 *
+	 * _.includes({ 'a': 1, 'b': 2 }, 1);
+	 * // => true
+	 *
+	 * _.includes('abcd', 'bc');
+	 * // => true
+	 */
+	function includes(collection, value, fromIndex, guard) {
+	  collection = isArrayLike_1(collection) ? collection : values_1(collection);
+	  fromIndex = (fromIndex && !guard) ? toInteger_1(fromIndex) : 0;
+
+	  var length = collection.length;
+	  if (fromIndex < 0) {
+	    fromIndex = nativeMax$1(length + fromIndex, 0);
+	  }
+	  return isString_1(collection)
+	    ? (fromIndex <= length && collection.indexOf(value, fromIndex) > -1)
+	    : (!!length && _baseIndexOf(collection, value, fromIndex) > -1);
+	}
+
+	var includes_1 = includes;
+
 	class EditableInput extends Component {
 	  constructor(props) {
 	    super(props);
+	    this.customColorsList = [];
 	    this.state = {
 	      value: String(props.value).toUpperCase(),
-	      blurValue: String(props.value).toUpperCase()
+	      blurValue: String(props.value).toUpperCase(),
+	      peter: "lef"
 	    };
 	    this.handleChange = this.handleChange.bind(this);
 	    this.handleBlur = this.handleBlur.bind(this);
 	    this.setUpdatedValue = this.setUpdatedValue.bind(this);
+	    this.handleCustomClick = this.handleCustomClick.bind(this);
 	  }
 
 	  handleBlur() {
@@ -15379,7 +15732,11 @@ var Color = (function () {
 	  }
 
 	  handleChange(e) {
-	    this.setUpdatedValue(e.target.value, e);
+	    this.setUpdatedValue(e.target.value);
+	  }
+
+	  handleCustomClick(color) {
+	    this.setUpdatedValue(color);
 	  }
 
 	  isColorValid(value) {
@@ -15392,7 +15749,7 @@ var Color = (function () {
 	    }
 	  }
 
-	  setUpdatedValue(value, e) {
+	  setUpdatedValue(value) {
 	    jquery(".color-input-input input").removeClass("color-not-valid");
 
 	    if (!this.isColorValid(value)) {
@@ -15405,8 +15762,24 @@ var Color = (function () {
 	        this.props.onChange(value, false);
 	      }
 
+	      jquery(".custom-colors").show();
+	      var customSwatchList = jquery(".item-list");
+
+	      if (!includes_1(this.customColorsList, value)) {
+	        this.customColorsList.push(value);
+	        var props = {
+	          color: value,
+	          hex: value,
+	          onClick: this.handleCustomClick,
+	          folie: false
+	        };
+	        var swatch = new Swatch(props);
+	        customSwatchList.append(swatch.build());
+	      }
+
 	      this.setState({
-	        value: value
+	        value: value,
+	        peter: "none"
 	      });
 	    }
 	  }
@@ -15425,15 +15798,16 @@ var Color = (function () {
 	      label: this.props.style && this.props.style.label ? this.props.style.label : {}
 	    };
 	    var outerdiv = jquery(document.createElement('div'));
-	    outerdiv.css(styles.wrap);
-	    outerdiv.addClass("color-input");
+	    var colorInput = jquery(document.createElement('div'));
+	    colorInput.css(styles.wrap);
+	    colorInput.addClass("color-input");
 
 	    if (this.props.label && !this.props.hideLabel) {
 	      var label = jquery(document.createElement('div'));
 	      label.css(styles.label);
 	      label.addClass("color-input-name");
 	      label.append(this.props.label);
-	      outerdiv.append(label);
+	      colorInput.append(label);
 	    }
 
 	    var colorInputInputOuter = jquery(document.createElement('div'));
@@ -15447,11 +15821,24 @@ var Color = (function () {
 	    input.attr("spellCheck", false);
 	    input.attr("maxlength", 7);
 	    colorInputInputOuter.append(input);
-	    outerdiv.append(colorInputInputOuter);
+	    colorInput.append(colorInputInputOuter);
+	    var tiny = tinycolor(this.state.value);
 	    var colorInputChip = jquery(document.createElement('div'));
 	    colorInputChip.addClass("color-input-chip");
-	    colorInputChip.css("background-color", "rgb(255, 255, 255);");
-	    outerdiv.append(colorInputChip);
+	    colorInputChip.css("background-color", tiny.toRgbString());
+	    colorInput.append(colorInputChip);
+	    outerdiv.append(colorInput);
+	    var customColorsName = jquery(document.createElement('div'));
+	    customColorsName.addClass("custom-colors-name");
+	    customColorsName.append(" Gekozen kleuren ");
+	    var customColorsList = jquery(document.createElement('div'));
+	    customColorsList.addClass("item-list");
+	    var customColors = jquery(document.createElement('div'));
+	    customColors.addClass("custom-colors");
+	    customColors.hide();
+	    customColors.append(customColorsName);
+	    customColors.append(customColorsList);
+	    outerdiv.append(customColors);
 	    return outerdiv;
 	  }
 
@@ -15630,7 +16017,9 @@ var Color = (function () {
 	    this.uiDialog.css({
 	      position: "absolute",
 	      height: "auto",
-	      width: "300px"
+	      width: "231px",
+	      "z-index": "2",
+	      "top": "330px"
 	    }); // Need to show the dialog to get the actual offset in the position plugin
 
 	    var isVisible = this.uiDialog.is(":visible");
@@ -15952,22 +16341,27 @@ var Color = (function () {
 	    this.options = opts;
 	    this.diaOpen = false;
 	    this.color = "#000000";
+	    this.folieon = true;
+	    this.folie = false;
+	    this.handleChange = this.handleChange.bind(this);
 
 	    this._createWrapper();
 
 	    this._createDialog();
 
 	    this._createTaps();
-
-	    this.handleChange = this.handleChange.bind(this);
 	  }
 
 	  handleChange(color, folie) {
 	    this.color = color;
-	    this.folie = false;
+	    this.folie = folie;
 
 	    if (this.options.change) {
-	      this.options.change(color);
+	      this.options.change(color, folie);
+	    }
+
+	    if (!folie) {
+	      jquery("react-tabs__tab#folie").hide();
 	    }
 
 	    jquery(".open-select").removeAttr('style');
@@ -15976,15 +16370,16 @@ var Color = (function () {
 	      jquery(".open-select").css(mynewcolor.defaultProps.openSelectStyle);
 	      jquery(".open-select").css("background-color", color);
 	    } else {
+	      var tiny = tinycolor(color);
 	      jquery(".open-select").css(mynewcolor.defaultProps.openSelectStyle);
-	      jquery(".open-select").css("background-image", "linear-gradient(to right top, rgb(214, 160, 14), white)");
+	      jquery(".open-select").css("background-image", "linear-gradient(to right top, " + tiny.toRgbString() + ", white)");
 	    }
 	  }
 
 	  openDialog() {
 	    if (this.diaOpen) {
 	      this.dia.close();
-	      if (this.options.hide) this.options.hide(this.color);
+	      if (this.options.hide) this.options.hide(this.color, this.folie);
 	    } else {
 	      this.dia.open();
 	    }
@@ -15992,8 +16387,8 @@ var Color = (function () {
 	    this.diaOpen = !this.diaOpen;
 	  }
 
-	  setColor(color) {
-	    this.handleChange(color, false);
+	  setColor(color, folie) {
+	    this.handleChange(color, folie);
 	  }
 
 	  getColor() {
@@ -16008,9 +16403,11 @@ var Color = (function () {
 	    this.handleChange = this.handleChange.bind(this);
 
 	    if (custom) {
+	      var value = this.getColor();
 	      var editableInput = new EditableInput({
 	        label: " Kleurcode ",
-	        onChange: this.handleChange
+	        onChange: this.handleChange,
+	        value: value
 	      });
 	      swatchList = swatchList.add(editableInput.build());
 	    } else {
@@ -16061,6 +16458,7 @@ var Color = (function () {
 	    var aaaaa = [];
 	    var bbbbb = [];
 	    var ccccc = [];
+	    var folieon = this.folieon;
 	    var i = 0;
 	    map_1(this.options.taps, (props, index) => {
 	      var selected = false;
@@ -16069,8 +16467,14 @@ var Color = (function () {
 	        selected = true;
 	      }
 
-	      aaaaa.push(this._createTapsHeader(props, index, selected));
-	      bbbbb.push(this._createTapsPanel(props, index, selected));
+	      if (props.folie && folieon) {
+	        aaaaa.push(this._createTapsHeader(props, index, selected));
+	        bbbbb.push(this._createTapsPanel(props, index, selected));
+	      } else if (!props.folie) {
+	        aaaaa.push(this._createTapsHeader(props, index, selected));
+	        bbbbb.push(this._createTapsPanel(props, index, selected));
+	      }
+
 	      i++;
 	    });
 	    var tablist = new TabList({
@@ -16124,12 +16528,10 @@ var Color = (function () {
 	    userSelect: "none",
 	    "-webkit-user-drag": "none",
 	    "-webkit-tap-highlight-color": "rgba(0, 0, 0, 0)"
-	  }
-	};
-	var Color = {
-	  newColor: mynewcolor
+	  },
+	  folieon: true
 	};
 
-	return Color;
+	return mynewcolor;
 
 }());

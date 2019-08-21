@@ -21,7 +21,7 @@ function Component(props, context, updater) {
 
 	props.children = props.children || "";
 	this.props = props;
-	this.context = context;
+	this.context = context || {};
 
 	// If a component has string refs, we will assign a different object later.
 	this.refs = emptyObject;

@@ -1,4 +1,3 @@
-
 import jQuery from "jquery";
 
 class Dialog {
@@ -174,7 +173,13 @@ class Dialog {
 
 	_position() {
 
-		this.uiDialog.css({position: "absolute" , height: "auto", width: "300px"});
+		this.uiDialog.css({
+	      position: "absolute",
+	      height: "auto",
+	      width: "231px",
+	      "z-index": "2",
+	      "top": "330px"
+	    });
 
 		// Need to show the dialog to get the actual offset in the position plugin
 		var isVisible = this.uiDialog.is( ":visible" );
