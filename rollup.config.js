@@ -7,6 +7,24 @@ import { uglify } from "rollup-plugin-uglify";            // https://github.com/
 const builtins =  require('rollup-plugin-node-builtins');
 import babel from 'rollup-plugin-babel';
 
+var sassHelper  = require("./helpers/sass.js");
+
+var srcPath = __dirname + '/sass';
+var destPath = __dirname + '/public/styles';
+
+
+sass = sassHelper({
+	src: srcPath,
+	dest: destPath,
+	debug: true,
+	outputStyle: 'expanded',
+	sourceMap: true,
+	sourceMapEmbed: true,
+	/*outputStyle: 'compressed'*/
+
+})
+
+
 var isProduction = (process.env.BUILD === 'production');
 
 const plugins = [
@@ -19,7 +37,8 @@ const plugins = [
 		presets: [["@babel/preset-env", { modules: false }]],
 		exclude: 'node_modules/**',
 		"plugins": ["transform-class-properties"]
-	})
+	}),
+	sass()
 ];
 
 var filename = 'public/js/index.js';

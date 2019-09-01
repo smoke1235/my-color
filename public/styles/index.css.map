@@ -1,0 +1,10 @@
+{
+	"version": 3,
+	"file": "index.css",
+	"sources": [
+		"../../sass/index.scss",
+		"../../sass/taps.scss"
+	],
+	"names": [],
+	"mappings": "ACAA,AAAA,OAAO,CAAC;EACP,KAAK,EAAC,KAAK;CACX;;ADAD,AAAA,MAAM,CAAC;EACN,KAAK,EAAC,OAAO;CACb"
+}
