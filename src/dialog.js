@@ -28,9 +28,9 @@ class Dialog {
 
 			// Ensure the titlebar is always visible
 			using: function( pos ) {
-				var topOffset = $( this ).css( pos ).offset().top;
+				var topOffset = jQuery( this ).css( pos ).offset().top;
 				if ( topOffset < 0 ) {
-					$( this ).css( "top", pos.top - topOffset );
+					jQuery( this ).css( "top", pos.top - topOffset );
 				}
 			}
 		},
@@ -66,7 +66,7 @@ class Dialog {
 			} )
 			.appendTo( element );
 
-			this.uiDialog.css({border: "1px solid black", backgroundColor:"#ffffff"});
+		this.uiDialog.css({border: "1px solid black", backgroundColor:"#ffffff"});
 
 
 
@@ -79,7 +79,6 @@ class Dialog {
 	}
 
 	open() {
-		var that = this;
 		if ( this._isOpen ) {
 			if ( this._moveToTop() ) {
 				this._focusTabbable();
@@ -93,18 +92,10 @@ class Dialog {
 		this._createOverlay();
 		this._moveToTop( null, true );
 
-
-
-		this._show( this.uiDialog, this.options.show, function() {
-
-		} );
-
-
+		this._show( this.uiDialog, this.options.show, function() {} );
 	}
 
-	close( event ) {
-		var that = this;
-
+	close() {
 		if ( !this._isOpen) {
 			return;
 		}
@@ -112,9 +103,7 @@ class Dialog {
 		this._isOpen = false;
 		this._focusedElement = null;
 
-		this._hide( this.uiDialog, this.options.hide, function() {
-			//that._trigger( "close", event );
-		} );
+		this._hide( this.uiDialog, this.options.hide, function() {} );
 	}
 
 	_show(element, option, next) {
@@ -129,16 +118,7 @@ class Dialog {
 
 		// If the user has resized the dialog, the .ui-dialog and .ui-dialog-content
 		// divs will both have width and height set, so we need to reset them
-		var nonContentHeight, minContentHeight, maxContentHeight,
-			options = this.options;
-
-		// Reset content sizing
-		/*this.element.show().css( {
-			width: "auto",
-			minHeight: 0,
-			maxHeight: "none",
-			height: 0
-		} );*/
+		var options = this.options;
 
 		if ( options.minWidth > options.width ) {
 			options.width = options.minWidth;
@@ -146,40 +126,21 @@ class Dialog {
 
 		// Reset wrapper sizing
 		// determine the height of all the non-content elements
-		nonContentHeight = this.uiDialog.css( {
+		this.uiDialog.css({
 			height: "auto",
 			width: options.width
-		} )
-			.outerHeight();
-		minContentHeight = Math.max( 0, options.minHeight - nonContentHeight );
-		maxContentHeight = typeof options.maxHeight === "number" ?
-			Math.max( 0, options.maxHeight - nonContentHeight ) :
-			"none";
-
-		/*if ( options.height === "auto" ) {
-			this.element.css( {
-				minHeight: minContentHeight,
-				maxHeight: maxContentHeight,
-				height: "auto"
-			} );
-		} else {
-			this.element.height( Math.max( 0, options.height - nonContentHeight ) );
-		}*/
-
-		/*if ( this.uiDialog.is( ":data(ui-resizable)" ) ) {
-			this.uiDialog.resizable( "option", "minHeight", this._minHeight() );
-		}*/
+		});
 	}
 
 	_position() {
 
 		this.uiDialog.css({
-	      position: "absolute",
-	      height: "auto",
-	      width: "231px",
-	      "z-index": "2",
-	      "top": "330px"
-	    });
+			position: "absolute",
+			height: "auto",
+			width: "231px",
+			"z-index": "2",
+			"top": "330px"
+		});
 
 		// Need to show the dialog to get the actual offset in the position plugin
 		var isVisible = this.uiDialog.is( ":visible" );
@@ -222,7 +183,7 @@ class Dialog {
 			}.bind( this ) );
 		}
 
-		this.overlay = $( "<div>" )
+		this.overlay = jQuery( "<div>" )
 			.appendTo( this._appendTo() );
 
 		this._addClass( this.overlay, null, "ui-widget-overlay ui-front" );
@@ -236,7 +197,7 @@ class Dialog {
 	_moveToTop( event, silent ) {
 		var moved = false,
 			zIndices = this.uiDialog.siblings( ".ui-front:visible" ).map( function() {
-				return +$( this ).css( "z-index" );
+				return +jQuery( this ).css( "z-index" );
 			} ).get(),
 			zIndexMax = Math.max.apply( null, zIndices );
 

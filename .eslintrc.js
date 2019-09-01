@@ -1,4 +1,4 @@
-const isProduction = process.env.NODE_ENV;
+const isProduction = process.env.BUILD;
 
 module.exports = {
     "env": {
@@ -10,6 +10,7 @@ module.exports = {
         "sourceType": "module",
         "ecmaVersion": 9,
     },
+	"parser": "babel-eslint",
     "extends": "eslint:recommended",
 	//"extends": "netflix",
     "rules": {

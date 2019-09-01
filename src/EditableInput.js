@@ -61,7 +61,7 @@ class EditableInput extends Component {
 
 
 
-			
+
 			if (this.props.onChange) {
 				this.props.onChange(value, false);
 			}
@@ -104,13 +104,14 @@ class EditableInput extends Component {
 			label:{}
 
 		};
-		const styles = {
+		var styles = {
 			wrap: assign({}, this.props.style.wrap, defaultStyles.wrap),
 			input: this.props.style && this.props.style.input ? this.props.style.input : {},
 			label: this.props.style && this.props.style.label ? this.props.style.label : {},
 		};
 
 		var outerdiv = jQuery(document.createElement('div') );
+		outerdiv.addClass("custom-option");
 
 		var colorInput = jQuery(document.createElement('div') );
 

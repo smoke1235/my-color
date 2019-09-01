@@ -8,7 +8,7 @@ class UncontrolledTabs extends Component {
 	}
 
 	build() {
-		const {
+		var {
 			children,
 			className,
 		} = this.props;

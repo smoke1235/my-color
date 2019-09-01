@@ -2,7 +2,7 @@ import jQuery from "jquery";
 import cx from 'classnames';
 import Component from "../Component";
 
-const DEFAULT_CLASS = 'react-tabs__tab';
+var DEFAULT_CLASS = 'react-tabs__tab';
 
 class Tab extends Component{
 	constructor (props) {
@@ -15,7 +15,7 @@ class Tab extends Component{
 	}
 
 	build() {
-		const {
+		var {
 			children,
 			className,
 			disabled,

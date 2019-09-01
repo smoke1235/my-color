@@ -1,6 +1,6 @@
 import ReactNoopUpdateQueue from './ReactNoopUpdateQueue';
 
-const emptyObject = {};
+var emptyObject = {};
 
 /**
 * Base class helpers for the updating state of a component.
@@ -11,7 +11,7 @@ function Component(props, context, updater) {
 	}
 
 	if (this.constructor.defaultProps) {
-		const defaultProps = this.constructor.defaultProps;
+		var defaultProps = this.constructor.defaultProps;
 		for (var propName in defaultProps) {
 			if (props[propName] === undefined) {
 				props[propName] = defaultProps[propName];

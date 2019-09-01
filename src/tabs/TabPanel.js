@@ -10,7 +10,7 @@ class TabPanel extends Component {
 	}
 
 	build() {
-		const {
+		var {
 			children,
 			className,
 			id,

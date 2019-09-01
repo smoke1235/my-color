@@ -108,25 +108,29 @@
 
 
 
-#react-tabs-custom .color-input {
+#react-tabs-custom .color-input,
+.custom-option .color-input {
 	padding: 10px 0;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
 
-#react-tabs-custom .color-input .color-input-name {
+#react-tabs-custom .color-input .color-input-name,
+.custom-option .color-input .color-input-name {
     padding: 5px 8.5px 0;
     width: 100px;
     margin: 0 3px;
 }
 
-#react-tabs-custom .color-input .color-input-input {
+#react-tabs-custom .color-input .color-input-input,
+.custom-option .color-input .color-input-input {
     width: 105px;
     margin-right: 10px;
 }
 
-#react-tabs-custom .color-input .color-input-input input {
+#react-tabs-custom .color-input .color-input-input input,
+.custom-option .color-input .color-input-input input {
     width: 85px;
     height: 20px;
     padding: 5px;
@@ -134,7 +138,8 @@
     border-radius: 2px;
 }
 
-#react-tabs-custom .color-input .color-input-chip {
+#react-tabs-custom .color-input .color-input-chip,
+.custom-option .color-input .color-input-chip {
     width: 30px;
     height: 30px;
     display: inline-block;
@@ -142,7 +147,8 @@
     border-radius: 2px;
 }
 
-#react-tabs-custom .color-input .color-input-input input.color-not-valid {
+#react-tabs-custom .color-input .color-input-input input.color-not-valid,
+.custom-option .color-input .color-input-input input.color-not-valid {
     border: 3px solid #ff1c41;
     border-radius: 2px;
 }
@@ -151,20 +157,29 @@
 	top :50px !important;
 }
 
-#react-tabs-custom .custom-colors-name{
+#react-tabs-custom .custom-colors-name,
+.custom-option .custom-colors-name {
 	 margin: 0 3px;
     padding: 0 8.5px;
 }
 
-#react-tabs-custom .item-list {
+#react-tabs-custom .item-list,
+.custom-option .item-list {
     padding: 8.5px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
 
-#react-tabs-custom .item-list .item-list-item {
+#react-tabs-custom .item-list .item-list-item,
+.custom-option .item-list .item-list-item {
     border: 1px solid #f1f2f3;
+}
+
+.swatches-outer {
+
+	display: flex;
+    flex-direction: column;
 }
 
 		</style>
@@ -197,7 +212,7 @@
 		var taps = {
 			"kleur": {
 				name : "kleur",
-				custom: false,
+				custom: true,
 				folie: false,
 				palette: colorPickerPalette
 			},
@@ -207,11 +222,11 @@
 				folie: true,
 				palette: colorPickerFoliePalette
 			},
-			"custom": {
+			/*"custom": {
 				name : "custom",
 				custom: true,
 				folie: false,
-			}
+			}*/
 		};
 
 

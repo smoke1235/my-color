@@ -7,28 +7,32 @@ import { uglify } from "rollup-plugin-uglify";            // https://github.com/
 const builtins =  require('rollup-plugin-node-builtins');
 import babel from 'rollup-plugin-babel';
 
-var isProduction = (process.env.NODE_ENV === 'production');
-isProduction = false;
+var isProduction = (process.env.BUILD === 'production');
+
 const plugins = [
 	builtins(),
 	nodeResolve({ jsnext: true, main: true }),
 	commonjs({ include: 'node_modules/**' }),
 	eslint({}),
 	babel({
-      exclude: 'node_modules/**',
-	  "plugins": ["transform-class-properties"]
-    })
+		babelrc: false,
+		presets: [["@babel/preset-env", { modules: false }]],
+		exclude: 'node_modules/**',
+		"plugins": ["transform-class-properties"]
+	})
 ];
 
+var filename = 'public/js/index.js';
 if (isProduction) {
 	plugins.push(uglify());
+	filename = 'public/js/index.min.js';
 }
 
 module.exports = {
 	plugins,
 	input: 'src/index.js',
 	output: {
-		file: 'public/js/index.js',
+		file: filename,
 		format: 'iife',
 		name: 'Color'
 	}

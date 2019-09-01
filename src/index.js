@@ -80,29 +80,34 @@ class mynewcolor {
 		var colorPalette = props.palette;
 		var folie = props.folie;
 		var custom = props.custom;
-		var swatchList = jQuery();
 		this.handleChange = this.handleChange.bind(this);
+
+		var outerdiv = jQuery(document.createElement('div') );
+		outerdiv.addClass("swatches-outer");
+		var swatchdiv = jQuery(document.createElement('div') );
+		swatchdiv.addClass("swatches");
+
+		map(colorPalette, (c, i) => {
+			var props = {
+				key:i,
+				color:c,
+				hex:c,
+				onClick: this.handleChange,
+				folie: folie
+			};
+			var swatch = new Swatch(props);
+			swatchdiv.append(swatch.build());
+		});
+
+		outerdiv.append(swatchdiv);
 
 		if (custom) {
 			var value = this.getColor();
 			var editableInput = new EditableInput({label:" Kleurcode ", onChange:this.handleChange, value: value});
-			swatchList = swatchList.add(editableInput.build());
-		}
-		else {
-			map(colorPalette, (c, i) => {
-				var props = {
-					key:i,
-					color:c,
-					hex:c,
-					onClick: this.handleChange,
-					folie: folie
-				};
-				var swatch = new Swatch(props);
-				swatchList = swatchList.add(swatch.build());
-			});
+			outerdiv.append(editableInput.build());
 		}
 
-		return swatchList;
+		return outerdiv;
 	}
 
 	_createWrapper() {
@@ -121,15 +126,15 @@ class mynewcolor {
 			},
 
 			longpress : function () {
-				console.log("longpress");
+				//console.log("longpress");
 			},
 
 			keydown : function () {
-				console.log("keydown");
+				//console.log("keydown");
 			},
 
 			touchend : function () {
-				console.log("touchend");
+				//console.log("touchend");
 			},
 		})
 	}

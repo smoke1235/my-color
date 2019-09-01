@@ -1,7 +1,7 @@
 /**
  * This is the abstract API for an update queue.
  */
-const ReactNoopUpdateQueue = {
+var ReactNoopUpdateQueue = {
 	/**
 	 * Checks whether or not this composite component is mounted.
 	 * @return {boolean} True if mounted, false otherwise.
@@ -45,13 +45,11 @@ const ReactNoopUpdateQueue = {
    *
    * @param {ReactClass} publicInstance The instance that should rerender.
    * @param {object} partialState Next partial state to be merged with state.
-   * @param {?function} callback Called after component is updated.
-   * @param {?string} Name of the calling function in the public API.
    * @internal
    */
-	enqueueSetState: function(publicInstance, partialState, callback, callerName) {
+	enqueueSetState: function(publicInstance, partialState) {
 		publicInstance.state = Object.assign(publicInstance.state, partialState);
-		
+
 		//publicInstance.build();
 	},
 };

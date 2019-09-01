@@ -8,7 +8,7 @@ class TabList extends Component {
 	}
 
 	build() {
-		const { children, className} = this.props;
+		var { children, className} = this.props;
 
 		var tabList = jQuery( "<div>" );
 		tabList.addClass(cx(className));
