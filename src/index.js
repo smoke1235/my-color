@@ -37,7 +37,7 @@ class mynewcolor {
 		}
 
 		if (!folie) {
-			jQuery("react-tabs__tab#folie").hide();
+			jQuery(".react-tabs__tab#folie").hide();
 		}
 
 		jQuery(".open-select").removeAttr( 'style' );
