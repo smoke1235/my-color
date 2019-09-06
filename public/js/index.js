@@ -16520,10 +16520,12 @@ var Color = (function () {
           this.options.change(color, folie);
         }
 
-        if (!folie) {
-          jquery(".react-tabs__tab#folie").hide();
-        } else {
-          jquery(".react-tabs__tab#folie").show();
+        if (!this.options.admin) {
+          if (!folie) {
+            jquery(".react-tabs__tab#folie").hide();
+          } else {
+            jquery(".react-tabs__tab#folie").show();
+          }
         }
 
         jquery(".open-select").removeAttr('style');

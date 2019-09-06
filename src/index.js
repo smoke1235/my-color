@@ -36,11 +36,13 @@ class mynewcolor {
 			this.options.change(color, folie);
 		}
 
-		if (!folie) {
-			jQuery(".react-tabs__tab#folie").hide();
-		}
-		else {
-			jQuery(".react-tabs__tab#folie").show();
+		if (!this.options.admin) {
+			if (!folie) {
+				jQuery(".react-tabs__tab#folie").hide();
+			}
+			else {
+				jQuery(".react-tabs__tab#folie").show();
+			}
 		}
 
 		jQuery(".open-select").removeAttr( 'style' );
