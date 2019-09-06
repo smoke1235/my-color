@@ -1,6 +1,7 @@
 # ignore folders
 node_modules
 bk
+public/js
 
 # ignore files
 package-lock.json
