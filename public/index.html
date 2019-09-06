@@ -232,11 +232,11 @@
 
 var _controls = {
 	color: {
-		val: function(value) {
+		val: function(value, folie) {
 			if(value === undefined) {
 				return color.getColor();
 			}
-			color.setColor(value);
+			color.setColor(value, folie);
 		},
 		move: function(color) {
 			console.log(color);
@@ -247,43 +247,8 @@ var _controls = {
 			//DesignTool.setColor(color.toHexString());
 		}
 	},
-	textColor: {
-		isAvailable: function() {
-			return ($j("#dt-text-color").length !== 0);
-		},
-		val: function(value) {
-			if(value === undefined) {
-				return $j("#dt-text-color").spectrum("get").toHexString();
-			}
-			$j("#dt-text-color").spectrum("set", value);
-		},
-		move: function(color) {
-			DesignTool.setColor(color.toHexString());
-		},
-		change: function(color) {
-			DesignTool.setColor(color.toHexString());
-		},
-		hide: function(color) {
-			DesignTool.setColor(color.toHexString());
-		}
-	},
-	backgroundColor: {
-		val: function(value) {
-			if(value === undefined) {
-				return $j("#dt-background-color").spectrum("get").toHexString();
-			}
-			$j("#dt-background-color").spectrum("set", value);
-		},
-		move: function(color) {
-			DesignTool.setBackgroundColor(color.toHexString());
-		},
-		change: function(color) {
-			DesignTool.setBackgroundColor(color.toHexString());
-		},
-		hide: function(color) {
-			DesignTool.setBackgroundColor(color.toHexString());
-		}
-	}
+
+
 };
 
 
@@ -296,7 +261,7 @@ var color = new Color(jQuery("#peter"),
 	hide: _controls.color.hide
 });
 
-
+color.setColor("#000000", false);
 
 </script>
 </body>

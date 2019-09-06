@@ -39,6 +39,9 @@ class mynewcolor {
 		if (!folie) {
 			jQuery(".react-tabs__tab#folie").hide();
 		}
+		else {
+			jQuery(".react-tabs__tab#folie").show();
+		}
 
 		jQuery(".open-select").removeAttr( 'style' );
 
@@ -51,6 +54,10 @@ class mynewcolor {
 			jQuery(".open-select").css(mynewcolor.defaultProps.openSelectStyle);
 			jQuery(".open-select").css("background-image", "linear-gradient(to right top, "+tiny.toRgbString()+", white)");
 		}
+
+		if (this.diaOpen) {
+			this.openDialog();
+		}
 	}
 
 	openDialog() {
@@ -61,6 +68,9 @@ class mynewcolor {
 				this.options.hide(this.color, this.folie);
 		}
 		else {
+			if (this.folie) {
+				this.setSelected("folie");
+			}
 			this.dia.open();
 		}
 

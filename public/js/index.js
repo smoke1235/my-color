@@ -16521,7 +16521,9 @@ var Color = (function () {
         }
 
         if (!folie) {
-          jquery("react-tabs__tab#folie").hide();
+          jquery(".react-tabs__tab#folie").hide();
+        } else {
+          jquery(".react-tabs__tab#folie").show();
         }
 
         jquery(".open-select").removeAttr('style');
@@ -16534,6 +16536,10 @@ var Color = (function () {
           jquery(".open-select").css(mynewcolor.defaultProps.openSelectStyle);
           jquery(".open-select").css("background-image", "linear-gradient(to right top, " + tiny.toRgbString() + ", white)");
         }
+
+        if (this.diaOpen) {
+          this.openDialog();
+        }
       }
     }, {
       key: "openDialog",
@@ -16542,6 +16548,10 @@ var Color = (function () {
           this.dia.close();
           if (this.options.hide) this.options.hide(this.color, this.folie);
         } else {
+          if (this.folie) {
+            this.setSelected("folie");
+          }
+
           this.dia.open();
         }
 
