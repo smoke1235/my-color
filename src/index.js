@@ -36,8 +36,11 @@ class mynewcolor {
 			this.options.change(color, folie);
 		}
 
+
+
 		if (!this.options.admin) {
 			if (!folie) {
+				this.setSelected("kleur");
 				jQuery(".react-tabs__tab#folie").hide();
 			}
 			else {
