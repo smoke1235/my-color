@@ -5,13 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run server & npm run watch:js",
-    "server": "node server.js",
-    "watch:js": "rollup --config rollup.config.js --watch",
-    "pretest": "eslint --ignore-path .gitignore .",
-    "build:js": "rollup --config rollup.config.js --environment BUILD:production",
-    "build:css": "npm run server",
-    "build": "npm run build:js & npm run build:css"
+    "start": "rollup --config rollup.config.js --watch",
+    "build": "rollup --config rollup.config.js --environment BUILD:production"
   },
   "author": "Peter Donders",
   "license": "ISC",
