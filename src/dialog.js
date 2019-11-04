@@ -137,7 +137,7 @@ class Dialog {
 		this.uiDialog.css({
 			position: "absolute",
 			height: "auto",
-			width: "231px",
+			width: "238px",
 			"z-index": "2",
 			"top": "330px"
 		});
