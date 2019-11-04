@@ -9,8 +9,6 @@ import TabPanel from "./tabs/TabPanel";
 import Tabs from "./tabs/Tabs";
 import tinycolor from "tinycolor2";
 
-
-
 class mynewcolor {
 	constructor(element, opts) {
 		this.element = element;
@@ -28,7 +26,6 @@ class mynewcolor {
 	}
 
 	handleChange(color, folie) {
-
 		this.color = color;
 		this.folie = folie;
 
@@ -59,6 +56,9 @@ class mynewcolor {
 			jQuery(".open-select").css(mynewcolor.defaultProps.openSelectStyle);
 			jQuery(".open-select").css("background-image", "linear-gradient(to right top, "+tiny.toRgbString()+", white)");
 		}
+
+		jQuery(".custom-option .color-input-input input").val(color);
+		jQuery(".custom-option .color-input-chip").css("background-color", color);
 
 		if (this.diaOpen) {
 			this.openDialog();
