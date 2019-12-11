@@ -11,7 +11,11 @@ import tinycolor from "tinycolor2";
 
 class mynewcolor {
 	constructor(element, opts) {
+
+		var container = element.prop("ownerDocument");
+
 		this.element = element;
+		this.a = jQuery("body");
 		this.options = opts;
 		this.diaOpen = false;
 		this.color = "#000000";
@@ -83,7 +87,33 @@ class mynewcolor {
 	}
 
 	setColor(color, folie) {
-		this.handleChange(color, folie);
+		this.color = color;
+		this.folie = folie;
+
+		if (!this.options.admin) {
+			if (!folie) {
+				this.setSelected("kleur");
+				jQuery(".react-tabs__tab#folie").hide();
+			}
+			else {
+				jQuery(".react-tabs__tab#folie").show();
+			}
+		}
+
+		jQuery(".open-select").removeAttr( 'style' );
+
+		if (!folie) {
+			jQuery(".open-select").css(mynewcolor.defaultProps.openSelectStyle);
+			jQuery(".open-select").css("background-color", color);
+		}
+		else {
+			var tiny = tinycolor(color);
+			jQuery(".open-select").css(mynewcolor.defaultProps.openSelectStyle);
+			jQuery(".open-select").css("background-image", "linear-gradient(to right top, "+tiny.toRgbString()+", white)");
+		}
+
+		jQuery(".custom-option .color-input-input input").val(color);
+		jQuery(".custom-option .color-input-chip").css("background-color", color);
 	}
 
 	getColor() {

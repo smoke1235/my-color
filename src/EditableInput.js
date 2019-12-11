@@ -25,13 +25,20 @@ class EditableInput extends Component {
 	}
 
 	handleBlur() {
+		//console.log("handleBlur");
 		if (this.state.blurValue) {
 			this.setState({ value: this.state.blurValue, blurValue: null })
 		}
 	}
 
 	handleChange(e){
-		this.setUpdatedValue(e.target.value)
+		//console.log("change");
+		//console.log(e);
+		if (e.keyCode == 13){
+			this.setUpdatedValue(e.target.value)
+		}
+
+
 	}
 
 	handleCustomClick(color) {
@@ -49,6 +56,7 @@ class EditableInput extends Component {
 	}
 
 	setUpdatedValue(value) {
+		//console.log("change");
 
 		jQuery(".color-input-input input").removeClass("color-not-valid");
 
@@ -63,7 +71,7 @@ class EditableInput extends Component {
 
 
 			if (this.props.onChange) {
-				this.props.onChange(value, false);
+				//this.props.onChange(value, false);
 			}
 
 
@@ -130,13 +138,15 @@ class EditableInput extends Component {
 		colorInputInputOuter.addClass("color-input-input");
 
 		var input = jQuery(document.createElement('input') );
+
 		input.css(styles.input);
-		input.val(this.state.value);
-		input.on("change", this.handleChange);
-		input.on("blur",  this.handleBlur);
-		input.attr("placeholder", this.props.placeholder);
+		//input.val(String(this.props.value).toUpperCase());
+		//input.on("change", this.handleChange);
+		//input.on("blur",  this.handleBlur);
+		//input.attr("placeholder", this.props.placeholder);
 		input.attr("spellCheck", false);
 		input.attr("maxlength", 7);
+		input.on("keydown", this.handleChange);
 
 		colorInputInputOuter.append(input);
 

@@ -138,7 +138,7 @@ class Dialog {
 			position: "absolute",
 			height: "auto",
 			width: "238px",
-			"z-index": "2",
+			"z-index": "99999999999999999",
 			"top": "330px"
 		});
 
