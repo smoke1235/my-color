@@ -12,8 +12,6 @@ import tinycolor from "tinycolor2";
 class mynewcolor {
 	constructor(element, opts) {
 
-		var container = element.prop("ownerDocument");
-
 		this.element = element;
 		this.a = jQuery("body");
 		this.options = opts;

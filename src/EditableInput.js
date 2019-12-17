@@ -32,16 +32,11 @@ class EditableInput extends Component {
 	}
 
 	handleChange(e){
-		//console.log("change");
-		//console.log(e);
-		if (e.keyCode == 13){
-			this.setUpdatedValue(e.target.value)
-		}
-
-
+		this.setUpdatedValue(e.target.value)
 	}
 
 	handleCustomClick(color) {
+		this.props.onChange(color, false);
 		this.setUpdatedValue(color)
 	}
 
@@ -71,7 +66,7 @@ class EditableInput extends Component {
 
 
 			if (this.props.onChange) {
-				//this.props.onChange(value, false);
+				this.props.onChange(value, false);
 			}
 
 
@@ -141,12 +136,11 @@ class EditableInput extends Component {
 
 		input.css(styles.input);
 		//input.val(String(this.props.value).toUpperCase());
-		//input.on("change", this.handleChange);
+		input.on("change", this.handleChange);
 		//input.on("blur",  this.handleBlur);
 		//input.attr("placeholder", this.props.placeholder);
 		input.attr("spellCheck", false);
 		input.attr("maxlength", 7);
-		input.on("keydown", this.handleChange);
 
 		colorInputInputOuter.append(input);
 

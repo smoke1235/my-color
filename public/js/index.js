@@ -15819,8 +15819,7 @@ var Color = (function () {
     _createClass(EditableInput, [{
       key: "handleBlur",
       value: function handleBlur() {
-        console.log("handleBlur");
-
+        //console.log("handleBlur");
         if (this.state.blurValue) {
           this.setState({
             value: this.state.blurValue,
@@ -15831,16 +15830,12 @@ var Color = (function () {
     }, {
       key: "handleChange",
       value: function handleChange(e) {
-        console.log("change");
-        console.log(e);
-
-        if (e.keyCode == 13) {
-          this.setUpdatedValue(e.target.value);
-        }
+        this.setUpdatedValue(e.target.value);
       }
     }, {
       key: "handleCustomClick",
       value: function handleCustomClick(color) {
+        this.props.onChange(color, false);
         this.setUpdatedValue(color);
       }
     }, {
@@ -15857,7 +15852,7 @@ var Color = (function () {
     }, {
       key: "setUpdatedValue",
       value: function setUpdatedValue(value) {
-        console.log("change");
+        //console.log("change");
         jquery(".color-input-input input").removeClass("color-not-valid");
 
         if (!this.isColorValid(value)) {
@@ -15866,7 +15861,9 @@ var Color = (function () {
           var tiny = tinycolor(value);
           jquery(".color-input-chip").css("background-color", tiny.toRgbString());
 
-          if (this.props.onChange) ;
+          if (this.props.onChange) {
+            this.props.onChange(value, false);
+          }
 
           jquery(".custom-colors").show();
           var customSwatchList = jquery(".item-list");
@@ -15922,13 +15919,12 @@ var Color = (function () {
         colorInputInputOuter.addClass("color-input-input");
         var input = jquery(document.createElement('input'));
         input.css(styles.input); //input.val(String(this.props.value).toUpperCase());
-        //input.on("change", this.handleChange);
-        //input.on("blur",  this.handleBlur);
+
+        input.on("change", this.handleChange); //input.on("blur",  this.handleBlur);
         //input.attr("placeholder", this.props.placeholder);
 
         input.attr("spellCheck", false);
         input.attr("maxlength", 7);
-        input.on("keydown", this.handleChange);
         colorInputInputOuter.append(input);
         colorInput.append(colorInputInputOuter);
         var tiny = tinycolor(this.state.value);
@@ -16490,8 +16486,6 @@ var Color = (function () {
     function mynewcolor(element, opts) {
       _classCallCheck(this, mynewcolor);
 
-      console.log(element.prop("ownerDocument"));
-      var container = element.prop("ownerDocument");
       this.element = element;
       this.a = jquery("body");
       this.options = opts;
