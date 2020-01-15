@@ -15044,6 +15044,8 @@ var Color = (function () {
       key: "build",
       value: function build() {
         var props = this.props;
+        var tiny = tinycolor(props.hex);
+        var classNames = tiny.toHsl().l < 0.5 ? "sp-thumb-dark" : "sp-thumb-light";
         var swatchStyle = {
           background: this.hexToRgbA(props.hex),
           cursor: 'pointer',
@@ -15060,6 +15062,7 @@ var Color = (function () {
         var title = color;
         var swatch = jquery("<div>");
         swatch.attr("title", title);
+        swatch.addClass(classNames);
         swatch.attr("tabIndex", 0);
         swatch.css(swatchStyle);
         swatch.on("click", this.onClick);
@@ -16534,6 +16537,9 @@ var Color = (function () {
 
         jquery(".custom-option .color-input-input input").val(color);
         jquery(".custom-option .color-input-chip").css("background-color", color);
+        console.log(jquery(".swatches div[title|='" + color + "']"));
+        jquery(".swatches div").removeClass("selected").html("");
+        jquery(".swatches div[title|='" + color + "']").addClass("selected").html('<i class="fas fa-check"></i>');
 
         if (this.diaOpen) {
           this.openDialog();
@@ -16583,6 +16589,9 @@ var Color = (function () {
 
         jquery(".custom-option .color-input-input input").val(color);
         jquery(".custom-option .color-input-chip").css("background-color", color);
+        jquery(".swatches div").removeClass("selected").html("");
+        jquery(".swatches div[title|='" + color + "']").addClass("selected").html('<i class="fas fa-check"></i>');
+        console.log(jquery(".swatches div[title|='" + color + "']"));
       }
     }, {
       key: "getColor",

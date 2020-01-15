@@ -22,6 +22,9 @@ class Swatch extends Component {
 	build() {
 
 		var props = this.props;
+		var tiny = tinycolor(props.hex);
+		var classNames = tiny.toHsl().l < 0.5 ? "sp-thumb-dark" : "sp-thumb-light";
+
 		var swatchStyle = {
 			background: this.hexToRgbA(props.hex),
 			cursor: 'pointer',
@@ -39,6 +42,7 @@ class Swatch extends Component {
 		var title = color;
 		var swatch = jQuery( "<div>" );
 		swatch.attr("title", title);
+		swatch.addClass(classNames);
 		swatch.attr("tabIndex", 0);
 		swatch.css(swatchStyle);
 		swatch.on("click", this.onClick);

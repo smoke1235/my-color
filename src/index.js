@@ -9,6 +9,8 @@ import TabPanel from "./tabs/TabPanel";
 import Tabs from "./tabs/Tabs";
 import tinycolor from "tinycolor2";
 
+
+
 class mynewcolor {
 	constructor(element, opts) {
 
@@ -62,6 +64,10 @@ class mynewcolor {
 		jQuery(".custom-option .color-input-input input").val(color);
 		jQuery(".custom-option .color-input-chip").css("background-color", color);
 
+		console.log(jQuery(".swatches div[title|='"+color+"']"));
+		jQuery(".swatches div").removeClass("selected").html("");
+		jQuery(".swatches div[title|='"+color+"']").addClass("selected").html('<i class="fas fa-check"></i>');
+
 		if (this.diaOpen) {
 			this.openDialog();
 		}
@@ -112,6 +118,10 @@ class mynewcolor {
 
 		jQuery(".custom-option .color-input-input input").val(color);
 		jQuery(".custom-option .color-input-chip").css("background-color", color);
+
+		jQuery(".swatches div").removeClass("selected").html("");
+		jQuery(".swatches div[title|='"+color+"']").addClass("selected").html('<i class="fas fa-check"></i>');
+		console.log(jQuery(".swatches div[title|='"+color+"']"));
 	}
 
 	getColor() {

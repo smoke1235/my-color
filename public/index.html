@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+		<script src="https://kit.fontawesome.com/fe97b3243d.js" crossorigin="anonymous"></script>
 		<style>
 		.open-select {
     cursor: pointer;
@@ -176,6 +176,23 @@
     border: 1px solid #f1f2f3;
 }
 
+.swatches .selected {
+	line-height: 0.9;
+}
+.selected .fa-check {
+	font-size: 10px;
+	margin-left: 3px;
+}
+
+.swatches .selected.sp-thumb-dark {
+	color: #FFFFFF;
+}
+
+.swatches .selected.sp-thumb-light {
+	color: #000000;
+}
+
+
 .swatches-outer {
 
 	display: flex;
@@ -262,7 +279,7 @@ var color = new Color(jQuery("#peter"),
 	admin:false
 });
 
-color.setColor("#000000", false);
+color.setColor("#ffffff", false);
 
 </script>
 </body>

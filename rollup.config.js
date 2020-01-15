@@ -10,16 +10,18 @@ import babel from 'rollup-plugin-babel';
 var isProduction = (process.env.BUILD === 'production');
 
 const plugins = [
+
 	builtins(),
 	nodeResolve({ jsnext: true, main: true }),
 	commonjs({ include: 'node_modules/**' }),
-	eslint({}),
+	eslint({ exclude:['/*.scss']}),
 	babel({
 		babelrc: false,
 		presets: [["@babel/preset-env", { modules: false }]],
 		exclude: 'node_modules/**',
 		"plugins": ["transform-class-properties"]
 	})
+
 ];
 
 var filename = 'public/js/index.js';
