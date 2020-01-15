@@ -16490,13 +16490,15 @@ var Color = (function () {
       _classCallCheck(this, mynewcolor);
 
       this.element = element;
-      this.a = jquery("body");
+      this.body = jquery("body");
       this.options = opts;
       this.diaOpen = false;
       this.color = "#000000";
       this.folieon = true;
       this.folie = false;
+      this.doc = element.prop("ownerDocument");
       this.handleChange = this.handleChange.bind(this);
+      this.clickout = this.clickout.bind(this);
 
       this._createWrapper();
 
@@ -16537,7 +16539,6 @@ var Color = (function () {
 
         jquery(".custom-option .color-input-input input").val(color);
         jquery(".custom-option .color-input-chip").css("background-color", color);
-        console.log(jquery(".swatches div[title|='" + color + "']"));
         jquery(".swatches div").removeClass("selected").html("");
         jquery(".swatches div[title|='" + color + "']").addClass("selected").html('<i class="fas fa-check"></i>');
 
@@ -16550,13 +16551,19 @@ var Color = (function () {
       value: function openDialog() {
         if (this.diaOpen) {
           this.dia.close();
-          if (this.options.hide) this.options.hide(this.color, this.folie);
+
+          if (this.options.hide) {
+            this.options.hide(this.color, this.folie);
+          }
+
+          jquery(this.doc).off("click", this.clickout);
         } else {
           if (this.folie) {
             this.setSelected("folie");
           }
 
           this.dia.open();
+          jquery(this.doc).on("click", this.clickout);
         }
 
         this.diaOpen = !this.diaOpen;
@@ -16591,12 +16598,21 @@ var Color = (function () {
         jquery(".custom-option .color-input-chip").css("background-color", color);
         jquery(".swatches div").removeClass("selected").html("");
         jquery(".swatches div[title|='" + color + "']").addClass("selected").html('<i class="fas fa-check"></i>');
-        console.log(jquery(".swatches div[title|='" + color + "']"));
       }
     }, {
       key: "getColor",
       value: function getColor() {
         return this.color;
+      }
+    }, {
+      key: "clickout",
+      value: function clickout(e) {
+        if (jquery(e.target).hasClass("open-select")) {
+          e.preventDefault();
+          return;
+        }
+
+        this.openDialog();
       }
     }, {
       key: "_createSwatches",

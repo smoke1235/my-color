@@ -15,14 +15,16 @@ class mynewcolor {
 	constructor(element, opts) {
 
 		this.element = element;
-		this.a = jQuery("body");
+		this.body = jQuery("body");
 		this.options = opts;
 		this.diaOpen = false;
 		this.color = "#000000";
 		this.folieon = true;
 		this.folie = false;
+		this.doc = element.prop("ownerDocument");
 
 		this.handleChange = this.handleChange.bind(this);
+		this.clickout = this.clickout.bind(this);
 
 		this._createWrapper();
 		this._createDialog();
@@ -36,8 +38,6 @@ class mynewcolor {
 		if (this.options.change) {
 			this.options.change(color, folie);
 		}
-
-
 
 		if (!this.options.admin) {
 			if (!folie) {
@@ -64,7 +64,6 @@ class mynewcolor {
 		jQuery(".custom-option .color-input-input input").val(color);
 		jQuery(".custom-option .color-input-chip").css("background-color", color);
 
-		console.log(jQuery(".swatches div[title|='"+color+"']"));
 		jQuery(".swatches div").removeClass("selected").html("");
 		jQuery(".swatches div[title|='"+color+"']").addClass("selected").html('<i class="fas fa-check"></i>');
 
@@ -77,14 +76,19 @@ class mynewcolor {
 		if (this.diaOpen) {
 			this.dia.close();
 
-			if (this.options.hide)
+			if (this.options.hide) {
 				this.options.hide(this.color, this.folie);
+			}
+
+			jQuery(this.doc).off("click", this.clickout);
 		}
 		else {
 			if (this.folie) {
 				this.setSelected("folie");
 			}
+
 			this.dia.open();
+			jQuery(this.doc).on("click", this.clickout);
 		}
 
 		this.diaOpen = !this.diaOpen;
@@ -121,15 +125,22 @@ class mynewcolor {
 
 		jQuery(".swatches div").removeClass("selected").html("");
 		jQuery(".swatches div[title|='"+color+"']").addClass("selected").html('<i class="fas fa-check"></i>');
-		console.log(jQuery(".swatches div[title|='"+color+"']"));
 	}
 
 	getColor() {
 		return this.color;
 	}
 
-	_createSwatches(props){
+	clickout(e) {
+		if (jQuery(e.target).hasClass("open-select")) {
+			e.preventDefault();
+			return;
+		}
 
+		this.openDialog();
+	}
+
+	_createSwatches(props){
 		var colorPalette = props.palette;
 		var folie = props.folie;
 		var custom = props.custom;
@@ -206,7 +217,7 @@ class mynewcolor {
 		map(this.options.taps, (props, index) => {
 
 			var selected = false;
-			if (i == 0){
+			if (i == 0) {
 				selected = true;
 			}
 
@@ -239,20 +250,18 @@ class mynewcolor {
 		jQuery(".react-tabs__tab-panel#react-tabs-"+e).addClass("selected");
 	}
 
-	_createTapsHeader(props, index, selected){
+	_createTapsHeader(props, index, selected) {
 		var panelId = "react-tabs-" + index;
 		var tab = new Tab({children: props.name, id:index, panelId:panelId, setSelected: this.setSelected, selected:selected});
 		return tab.build();
 	}
 
-	_createTapsPanel(props, index, selected){
+	_createTapsPanel(props, index, selected) {
 		var id = "react-tabs-" + index;
 		var children = this._createSwatches(props);
 		var tabpan1 = new TabPanel({children:children, id: id, selected:selected});
 		return tabpan1.build();
 	}
-
-
 }
 
 mynewcolor.defaultProps = {
