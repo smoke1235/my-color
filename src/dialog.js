@@ -74,6 +74,7 @@ class Dialog {
 	}
 
 	setContent(content) {
+		this.uiDialog.html("");
 		this.uiDialog.append(content);
 		//this.open();
 	}

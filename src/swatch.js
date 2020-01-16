@@ -24,6 +24,11 @@ class Swatch extends Component {
 		var props = this.props;
 		var tiny = tinycolor(props.hex);
 		var classNames = tiny.toHsl().l < 0.5 ? "sp-thumb-dark" : "sp-thumb-light";
+		var inner = '';
+		if (props.selectedColor === props.color) {
+			classNames += " selected";
+			inner = '<i class="fas fa-check"></i>';
+		}
 
 		var swatchStyle = {
 			background: this.hexToRgbA(props.hex),
@@ -46,6 +51,7 @@ class Swatch extends Component {
 		swatch.attr("tabIndex", 0);
 		swatch.css(swatchStyle);
 		swatch.on("click", this.onClick);
+		swatch.html(inner);
 		return swatch;
 	}
 }

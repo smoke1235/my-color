@@ -21,6 +21,7 @@ class mynewcolor {
 		this.color = "#000000";
 		this.folieon = true;
 		this.folie = false;
+		this.useFolie = false;
 		this.doc = element.prop("ownerDocument");
 
 		this.handleChange = this.handleChange.bind(this);
@@ -83,8 +84,13 @@ class mynewcolor {
 			jQuery(this.doc).off("click", this.clickout);
 		}
 		else {
+			this._createTaps();
+			console.log(this);
 			if (this.folie) {
 				this.setSelected("folie");
+			}
+			else {
+				this.setSelected("kleur");
 			}
 
 			this.dia.open();
@@ -99,11 +105,18 @@ class mynewcolor {
 		this.folie = folie;
 
 		if (!this.options.admin) {
-			if (!folie) {
+			if (!this.useFolie) {
 				this.setSelected("kleur");
 				jQuery(".react-tabs__tab#folie").hide();
 			}
 			else {
+				if (this.folie) {
+					this.setSelected("folie");
+				}
+				else {
+					this.setSelected("kleur");
+				}
+
 				jQuery(".react-tabs__tab#folie").show();
 			}
 		}
@@ -131,11 +144,31 @@ class mynewcolor {
 		return this.color;
 	}
 
+	isFolieOn(on) {
+		this.useFolie = on;
+
+		if (!this.options.admin) {
+			if (!on) {
+				jQuery(".react-tabs__tab#folie").hide();
+			}
+			else {
+				jQuery(".react-tabs__tab#folie").show();
+			}
+		}
+	}
+
 	clickout(e) {
+		console.log(e.target);
 		if (jQuery(e.target).hasClass("open-select")) {
 			e.preventDefault();
 			return;
 		}
+
+		if (jQuery(e.target).hasClass("react-tabs__tab")) {
+			e.preventDefault();
+			return;
+		}
+
 
 		this.openDialog();
 	}
@@ -157,7 +190,8 @@ class mynewcolor {
 				color:c,
 				hex:c,
 				onClick: this.handleChange,
-				folie: folie
+				folie: folie,
+				selectedColor: this.color
 			};
 			var swatch = new Swatch(props);
 			swatchdiv.append(swatch.build());
@@ -212,7 +246,7 @@ class mynewcolor {
 		var aaaaa = [];
 		var bbbbb = [];
 		var ccccc = [];
-		var folieon = this.folieon;
+		var folieon = this.useFolie;
 		var i = 0;
 		map(this.options.taps, (props, index) => {
 

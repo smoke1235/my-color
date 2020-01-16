@@ -15046,6 +15046,13 @@ var Color = (function () {
         var props = this.props;
         var tiny = tinycolor(props.hex);
         var classNames = tiny.toHsl().l < 0.5 ? "sp-thumb-dark" : "sp-thumb-light";
+        var inner = '';
+
+        if (props.selectedColor === props.color) {
+          classNames += " selected";
+          inner = '<i class="fas fa-check"></i>';
+        }
+
         var swatchStyle = {
           background: this.hexToRgbA(props.hex),
           cursor: 'pointer',
@@ -15066,6 +15073,7 @@ var Color = (function () {
         swatch.attr("tabIndex", 0);
         swatch.css(swatchStyle);
         swatch.on("click", this.onClick);
+        swatch.html(inner);
         return swatch;
       }
     }]);
@@ -16042,6 +16050,7 @@ var Color = (function () {
     }, {
       key: "setContent",
       value: function setContent(content) {
+        this.uiDialog.html("");
         this.uiDialog.append(content); //this.open();
       }
     }, {
@@ -16496,6 +16505,7 @@ var Color = (function () {
       this.color = "#000000";
       this.folieon = true;
       this.folie = false;
+      this.useFolie = false;
       this.doc = element.prop("ownerDocument");
       this.handleChange = this.handleChange.bind(this);
       this.clickout = this.clickout.bind(this);
@@ -16558,8 +16568,14 @@ var Color = (function () {
 
           jquery(this.doc).off("click", this.clickout);
         } else {
+          this._createTaps();
+
+          console.log(this);
+
           if (this.folie) {
             this.setSelected("folie");
+          } else {
+            this.setSelected("kleur");
           }
 
           this.dia.open();
@@ -16575,10 +16591,16 @@ var Color = (function () {
         this.folie = folie;
 
         if (!this.options.admin) {
-          if (!folie) {
+          if (!this.useFolie) {
             this.setSelected("kleur");
             jquery(".react-tabs__tab#folie").hide();
           } else {
+            if (this.folie) {
+              this.setSelected("folie");
+            } else {
+              this.setSelected("kleur");
+            }
+
             jquery(".react-tabs__tab#folie").show();
           }
         }
@@ -16605,9 +16627,29 @@ var Color = (function () {
         return this.color;
       }
     }, {
+      key: "isFolieOn",
+      value: function isFolieOn(on) {
+        this.useFolie = on;
+
+        if (!this.options.admin) {
+          if (!on) {
+            jquery(".react-tabs__tab#folie").hide();
+          } else {
+            jquery(".react-tabs__tab#folie").show();
+          }
+        }
+      }
+    }, {
       key: "clickout",
       value: function clickout(e) {
+        console.log(e.target);
+
         if (jquery(e.target).hasClass("open-select")) {
+          e.preventDefault();
+          return;
+        }
+
+        if (jquery(e.target).hasClass("react-tabs__tab")) {
           e.preventDefault();
           return;
         }
@@ -16633,7 +16675,8 @@ var Color = (function () {
             color: c,
             hex: c,
             onClick: _this.handleChange,
-            folie: folie
+            folie: folie,
+            selectedColor: _this.color
           };
           var swatch = new Swatch(props);
           swatchdiv.append(swatch.build());
@@ -16686,7 +16729,7 @@ var Color = (function () {
         var aaaaa = [];
         var bbbbb = [];
         var ccccc = [];
-        var folieon = this.folieon;
+        var folieon = this.useFolie;
         var i = 0;
         map_1(this.options.taps, function (props, index) {
           var selected = false;
