@@ -155,6 +155,10 @@ class mynewcolor {
 				jQuery(".react-tabs__tab#folie").show();
 			}
 		}
+		else {
+			this.useFolie = true;
+			jQuery(".react-tabs__tab#folie").show();
+		}
 	}
 
 	clickout(e) {

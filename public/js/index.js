@@ -16637,6 +16637,9 @@ var Color = (function () {
           } else {
             jquery(".react-tabs__tab#folie").show();
           }
+        } else {
+          this.useFolie = true;
+          jquery(".react-tabs__tab#folie").show();
         }
       }
     }, {
