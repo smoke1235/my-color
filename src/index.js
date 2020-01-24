@@ -85,7 +85,7 @@ class mynewcolor {
 		}
 		else {
 			this._createTaps();
-			console.log(this);
+
 			if (this.folie) {
 				this.setSelected("folie");
 			}
@@ -162,8 +162,8 @@ class mynewcolor {
 	}
 
 	clickout(e) {
-		console.log(e.target);
-		if (jQuery(e.target).hasClass("open-select")) {
+
+		if (jQuery(e.target).hasClass("open-select") || jQuery(e.target).hasClass("customColor")) {
 			e.preventDefault();
 			return;
 		}
@@ -174,7 +174,7 @@ class mynewcolor {
 		}
 
 
-		this.openDialog();
+		//this.openDialog();
 	}
 
 	_createSwatches(props){
@@ -227,17 +227,11 @@ class mynewcolor {
 				self.openDialog();
 			},
 
-			longpress : function () {
-				//console.log("longpress");
-			},
+			longpress : function () {},
 
-			keydown : function () {
-				//console.log("keydown");
-			},
+			keydown : function () {},
 
-			touchend : function () {
-				//console.log("touchend");
-			},
+			touchend : function () {},
 		})
 	}
 

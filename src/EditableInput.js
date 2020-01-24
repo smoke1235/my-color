@@ -25,7 +25,6 @@ class EditableInput extends Component {
 	}
 
 	handleBlur() {
-		//console.log("handleBlur");
 		if (this.state.blurValue) {
 			this.setState({ value: this.state.blurValue, blurValue: null })
 		}
@@ -51,8 +50,6 @@ class EditableInput extends Component {
 	}
 
 	setUpdatedValue(value) {
-		//console.log("change");
-
 		jQuery(".color-input-input input").removeClass("color-not-valid");
 
 		if (!this.isColorValid(value)) {
@@ -62,19 +59,12 @@ class EditableInput extends Component {
 			var tiny = tinycolor(value);
 			jQuery(".color-input-chip").css("background-color", tiny.toRgbString());
 
-
-
-
 			if (this.props.onChange) {
 				this.props.onChange(value, false);
 			}
 
-
-
 			jQuery(".custom-colors").show();
 			var customSwatchList = jQuery(".item-list");
-
-
 
 			if (!includes(this.customColorsList, value)) {
 				this.customColorsList.push(value);
@@ -87,8 +77,6 @@ class EditableInput extends Component {
 				var swatch = new Swatch(props);
 				customSwatchList.append(swatch.build());
 			}
-
-
 
 			this.setState({
 				value: value,
@@ -134,13 +122,16 @@ class EditableInput extends Component {
 
 		var input = jQuery(document.createElement('input') );
 
+		
+
 		input.css(styles.input);
-		//input.val(String(this.props.value).toUpperCase());
+		input.val(this.state.value);
 		input.on("change", this.handleChange);
 		//input.on("blur",  this.handleBlur);
 		//input.attr("placeholder", this.props.placeholder);
 		input.attr("spellCheck", false);
 		input.attr("maxlength", 7);
+		input.addClass("customColor");
 
 		colorInputInputOuter.append(input);
 

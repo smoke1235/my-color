@@ -15830,7 +15830,6 @@ var Color = (function () {
     _createClass(EditableInput, [{
       key: "handleBlur",
       value: function handleBlur() {
-        //console.log("handleBlur");
         if (this.state.blurValue) {
           this.setState({
             value: this.state.blurValue,
@@ -15863,7 +15862,6 @@ var Color = (function () {
     }, {
       key: "setUpdatedValue",
       value: function setUpdatedValue(value) {
-        //console.log("change");
         jquery(".color-input-input input").removeClass("color-not-valid");
 
         if (!this.isColorValid(value)) {
@@ -15929,13 +15927,14 @@ var Color = (function () {
         var colorInputInputOuter = jquery(document.createElement('div'));
         colorInputInputOuter.addClass("color-input-input");
         var input = jquery(document.createElement('input'));
-        input.css(styles.input); //input.val(String(this.props.value).toUpperCase());
-
+        input.css(styles.input);
+        input.val(this.state.value);
         input.on("change", this.handleChange); //input.on("blur",  this.handleBlur);
         //input.attr("placeholder", this.props.placeholder);
 
         input.attr("spellCheck", false);
         input.attr("maxlength", 7);
+        input.addClass("customColor");
         colorInputInputOuter.append(input);
         colorInput.append(colorInputInputOuter);
         var tiny = tinycolor(this.state.value);
@@ -16570,8 +16569,6 @@ var Color = (function () {
         } else {
           this._createTaps();
 
-          console.log(this);
-
           if (this.folie) {
             this.setSelected("folie");
           } else {
@@ -16645,9 +16642,7 @@ var Color = (function () {
     }, {
       key: "clickout",
       value: function clickout(e) {
-        console.log(e.target);
-
-        if (jquery(e.target).hasClass("open-select")) {
+        if (jquery(e.target).hasClass("open-select") || jquery(e.target).hasClass("customColor")) {
           e.preventDefault();
           return;
         }
@@ -16655,9 +16650,8 @@ var Color = (function () {
         if (jquery(e.target).hasClass("react-tabs__tab")) {
           e.preventDefault();
           return;
-        }
+        } //this.openDialog();
 
-        this.openDialog();
       }
     }, {
       key: "_createSwatches",
@@ -16710,12 +16704,9 @@ var Color = (function () {
           click: function click() {
             self.openDialog();
           },
-          longpress: function longpress() {//console.log("longpress");
-          },
-          keydown: function keydown() {//console.log("keydown");
-          },
-          touchend: function touchend() {//console.log("touchend");
-          }
+          longpress: function longpress() {},
+          keydown: function keydown() {},
+          touchend: function touchend() {}
         });
       }
     }, {
