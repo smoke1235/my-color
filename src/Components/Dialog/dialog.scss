@@ -1,0 +1,14 @@
+.dialog {
+	width: 100%;
+}
+
+.extaDialog {
+	display: flex;
+	flex-direction: column;
+	overflow-y: hidden;
+
+	@media (min-width: 992px) {
+		min-height: 240px;
+		max-height: calc(100vh - 180px);
+	}
+}

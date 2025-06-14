@@ -1,0 +1,21 @@
+.custom-color {
+    display: flex;
+    padding: 15px 0;
+
+	.custom-color-chip {
+		display: flex;
+		width: 30px;
+		height: 30px;
+		border-radius: 50%;
+		border: 1px solid #e4e5e8;
+	}
+
+	.custom-color-input {
+		height: 30px;
+		border-radius: var(--border-radius-medium, 5px);
+		width: 75px;
+		margin-left: 10px;
+		border: 1px solid #e4e5e8;
+		padding: 5px;
+	}
+}
