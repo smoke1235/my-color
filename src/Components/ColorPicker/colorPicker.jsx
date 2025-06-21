@@ -20,10 +20,8 @@ const ColorPicker = ({onClick, onChange, initialColor = "#96458b"}) => {
 
 	const localOnChange = (color) => {
 		setColor(color);
-		onChange(color);
+		onChange(color.toHexString());
 	}
-
-	console.log(color);
 	
 	const chipStyle = {
 		backgroundColor: color.toHexString()
@@ -38,7 +36,7 @@ const ColorPicker = ({onClick, onChange, initialColor = "#96458b"}) => {
 			
 			<div className="custom-color">
 				<div className="custom-color-chip" style={chipStyle}></div>
-				<input maxLength="7" required="" className="custom-color-input" value={color.toHexString()} placeholder="#96458b"/>
+				<input maxLength="7" required="" className="custom-color-input" onChange={localOnChange} value={color.toHexString()} placeholder="#96458b"/>
 			</div>
 
 			<div>

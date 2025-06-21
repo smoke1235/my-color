@@ -162,6 +162,7 @@ const MyColor = ({
 		if (props.custom) {
 			custom.push((
 				<button
+					key="custom"
 					onClick={onClickCustomButton}
 					className="icon-square add-custom-color-button" 
 					style={{width: "35.2222px", height: "35.2222px"}}>
@@ -191,8 +192,8 @@ const MyColor = ({
 		return allSwatches;
 	}
 
-	const onChangeCustom = () => {
-
+	const onChangeCustom = (color) => {
+		handleChange(color, false);
 	}
 
 	const renderColors = () => {
