@@ -1,0 +1,42 @@
+{
+  "name": "my-color",
+  "version": "1.0.3",
+  "description": "Custom Color picker",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "rollup --config rollup.config.js --watch",
+    "build": "rollup --config rollup.config.js --environment BUILD:production",
+    "start:dev": "webpack-dev-server"
+  },
+  "author": "Peter Donders",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.isreadyforthefuture.nl/peter/my-color.git"
+  },
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "jquery": "^3.4.1",
+    "lodash": "^4.17.15",
+    "tinycolor2": "^1.4.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.0",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "eslint": "^9.25.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "globals": "^16.0.0",
+    "vite": "^6.3.5"
+  },
+  "browser": {
+    "fs": false,
+    "child_process": false
+  },
+  "node": {
+    "fs": "empty"
+  }
+}
