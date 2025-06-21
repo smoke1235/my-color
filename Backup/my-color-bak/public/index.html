@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" >
+	<head>
+		<meta charset="utf-8">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<script src="https://kit.fontawesome.com/fe97b3243d.js" crossorigin="anonymous"></script>
+		<style>
+		.open-select {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #e4e5e8;
+    border-radius: 2px;
+	user-select: none;
+	-webkit-user-drag: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	touch-action: none;
+}
+
+.ui-tabs {
+    position: relative;
+    padding: .2em;
+}
+
+.ui-helper-clearfix:before, .ui-helper-clearfix:after {
+    content: "";
+    display: table;
+    border-collapse: collapse;
+}
+
+.ui-tabs .ui-tabs-nav {
+    margin: 0;
+    padding: .2em .2em 0;
+}
+
+.ui-helper-clearfix:after {
+    clear: both;
+}
+
+.ui-tabs .ui-tabs-nav li {
+    list-style: none;
+    float: left;
+    position: relative;
+    top: 0;
+    margin: 1px .2em 0 0;
+    border-bottom-width: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border: 1px solid #003eff;
+    background: #007fff;
+    font-weight: normal;
+    color: #ffffff;
+}
+
+.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+    cursor: pointer;
+}
+
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+    float: left;
+    padding: .5em 1em;
+    text-decoration: none;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+    margin-bottom: -1px;
+    padding-bottom: 1px;
+}
+
+.ui-tabs .ui-tabs-panel {
+    display: block;
+    border-width: 0;
+    padding: 1em 1.4em;
+    background: none;
+}
+
+
+.react-tabs__tab-list {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #e4e5e8;
+}
+
+.react-tabs__tab {
+    width: 50%;
+    padding: 10px 0;
+    text-align: center;
+    cursor: pointer;
+}
+
+.react-tabs__tab-panel {
+    display: none;
+}
+
+.react-tabs__tab-panel.selected {
+	display: block;
+}
+
+.react-tabs__tab.selected {
+    border-bottom: 4px solid #444c5f;
+}
+
+
+
+#react-tabs-custom .color-input,
+.custom-option .color-input {
+	padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#react-tabs-custom .color-input .color-input-name,
+.custom-option .color-input .color-input-name {
+    padding: 5px 8.5px 0;
+    width: 100px;
+    margin: 0 3px;
+}
+
+#react-tabs-custom .color-input .color-input-input,
+.custom-option .color-input .color-input-input {
+    width: 105px;
+    margin-right: 10px;
+}
+
+#react-tabs-custom .color-input .color-input-input input,
+.custom-option .color-input .color-input-input input {
+    width: 85px;
+    height: 20px;
+    padding: 5px;
+    border: 1px solid #e4e5e8;
+    border-radius: 2px;
+}
+
+#react-tabs-custom .color-input .color-input-chip,
+.custom-option .color-input .color-input-chip {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    border: 1px solid #e4e5e8;
+    border-radius: 2px;
+}
+
+#react-tabs-custom .color-input .color-input-input input.color-not-valid,
+.custom-option .color-input .color-input-input input.color-not-valid {
+    border: 3px solid #ff1c41;
+    border-radius: 2px;
+}
+
+.ui-dialog {
+	top :50px !important;
+}
+
+#react-tabs-custom .custom-colors-name,
+.custom-option .custom-colors-name {
+	 margin: 0 3px;
+    padding: 0 8.5px;
+}
+
+#react-tabs-custom .item-list,
+.custom-option .item-list {
+    padding: 8.5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#react-tabs-custom .item-list .item-list-item,
+.custom-option .item-list .item-list-item {
+    border: 1px solid #f1f2f3;
+}
+
+.swatches .selected {
+	line-height: 0.9;
+}
+.selected .fa-check {
+	font-size: 10px;
+	margin-left: 3px;
+}
+
+.swatches .selected.sp-thumb-dark {
+	color: #FFFFFF;
+}
+
+.swatches .selected.sp-thumb-light {
+	color: #000000;
+}
+
+
+.swatches-outer {
+
+	display: flex;
+    flex-direction: column;
+}
+
+		</style>
+
+	</head>
+	<body>
+
+		<div id="peter"></div>
+
+
+
+
+
+
+
+		<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+
+		<script src="js/index.js"></script>
+
+		<script type="text/javascript">
+
+
+		var colorPickerPalette =  ["#ffffff","#9d9d9c","#38302b","#673b15","#790e11","#7c330e","#8c6114","#fbba00","#4d6811","#00501f","#00524f","#000000","#b2b2b2","#59493f","#7d5024","#9d0d15","#a24311","#a37613","#ffd500","#678713","#006729","#006b66","#3c3c3b","#c6c6c6","#736157","#956939","#e30613","#f39400","#c4971a","#ffe160","#97bf0d","#009036","#009790","#575756","#dadada","#a3907c","#af8554","#eb6645","#f8b356","#ddb718","#ffed00","#b9d165","#47ad68","#30b3ad","#706f6f","#ededed","#cebca5","#cca674","#f29a79","#fccb8c","#edc82a","#fff265","#d0e099","#90c797","#8accc7","#878787","#f6f6f6","#e6ddd1","#e6d3b9","#fad0bc","#fee7c8","#f4d88c","#fffbd2","#eaf0cf","#cde5cd","#cbe7e4","#00547a","#003762","#002454","#0d0f49","#360947","#510045","#7c0042","#7a032a","#8f6565","#444a44","#3c4656","#006f9f","#004a7f","#00336e","#0f1b5f","#46155d","#69085a","#a00057","#9f0038","#a88181","#5f695f","#546071","#009ee1","#006ab3","#004a99","#172983","#622181","#93117e","#e3007a","#e3004f","#c19f9f","#818c82","#707e8f","#00b9e9","#488dc7","#5773b2","#61569d","#8a5b9d","#ae609e","#ea69a0","#eb6878","#d3b4b4","#a5afa6","#95a2af","#84d0f1","#8baed8","#8e9ac9","#9085ba","#ab8cbc","#c593be","#f19fc1","#f29da0","#e2cccc","#b4bcb4","#adbbc6","#c9e9f9","#c9d7ec","#c8cae4","#c8c2de","#d2c5df","#e2cbe1","#fadde9","#fad1d1","#eddfde","#c9d1ca","#c8d3db","#303a66","#3f4961","#485156","#5d7680","#61706f","#72735e","#bccdb3","#a45c74","#c49797","#dc887d","#bd9a58","#acb3c6","#c2d2da","#a4acb1","#9eafb5","#99adac","#b1b39d","#d7e2d1","#d69eb4","#e5c8c8","#ebb7b2","#dba64e"];
+
+		var colorPickerFoliePalette =  ["#ffffff","#9d9d9c","#38302b"];
+
+		var taps = {
+			"kleur": {
+				name : "kleur",
+				custom: true,
+				folie: false,
+				palette: colorPickerPalette
+			},
+			"folie": {
+				name : "folie",
+				custom: false,
+				folie: true,
+				palette: colorPickerFoliePalette
+			},
+			/*"custom": {
+				name : "custom",
+				custom: true,
+				folie: false,
+			}*/
+		};
+
+
+var _controls = {
+	color: {
+		val: function(value, folie) {
+			if(value === undefined) {
+				return color.getColor();
+			}
+			color.setColor(value, folie);
+		},
+		move: function(color) {
+			console.log(color);
+			//DesignTool.setColor(color.toHexString());
+		},
+		hide: function(color) {
+			console.log(color);
+			//DesignTool.setColor(color.toHexString());
+		}
+	},
+
+
+};
+
+
+var color = new Color(jQuery("#peter"),
+{
+	taps,
+
+	move: _controls.color.move,
+	change: _controls.color.change,
+	hide: _controls.color.hide,
+	admin:false
+});
+
+
+color.isFolieOn(true);
+color.setColor("#9d9d9c", true);
+
+</script>
+</body>
+</html>
